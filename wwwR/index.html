@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="jquery.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+
+    <script>
+$(document).ready(function(){
+  $("#start").click(function(){
+    var low = $('#low').val();
+    var hi = $('#hi').val();
+    if(low === "" || hi === ""){
+      alert("Freq Needed!!!");
+    }else{
+      start(low,hi);
+      setTimeout(function(){
+        window.location.replace("output");
+      },500);
+    }
+  });
+
+  $("#stop").click(function(){
+    stop();
+
+    setTimeout(function(){
+      window.location.replace("output");
+    },500);
+  });
+});
+
+function start(low,hi){
+  var url = '/cgi-bin/start.cgi';
+  $.get( url,{hi:hi,low:low}, function( data ) {
+    console.log( data );
+  });
+}
+
+function stop(){
+  var url = '/cgi-bin/stop.cgi';
+  $.get( url, function( data ) {
+    console.log( data );
+  });
+}
+    </script>
+  </head>
+  <body>
+
+    <div id="main" class="container">
+      <Br>
+      <input placeholder="low" type="number" class="form-control" id="low" name="low">
+      <Br>
+      <input placeholder="hi" type="number" class="form-control" id="hi" name="hi">
+      <Br>
+      <button id="start" type="button" class="btn-lg btn-primary btn-block">Start</button>
+      <Br>
+      <button id="stop" type="button" class="btn-lg btn-primary btn-block">Stop</button>
+      <Br>
+      <a href="output" type="button" class="btn-lg btn-primary btn-block">View Files</a>
+
+    </div>
+
+  </body>
+</html>
+
