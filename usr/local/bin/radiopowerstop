@@ -1,0 +1,24 @@
+#!/bin/bash
+
+output="$(cat /tmp/radio.tmp)"
+tmp="/home/pi/wwwR/output/tmp/"
+
+echo "Killing rtl..."
+killall rtl_power
+echo "killing GPS..."
+ps aux|grep ttyS0|awk '{print $2}'|while read pid
+do 
+  kill $pid
+done
+
+echo "Concatinating..."
+cat ${output}_1.html ${output}_2.html > ${output}_3
+echo "Sorting..."
+sort ${output}_3 > ${output}.txt
+
+sleep .5
+echo "removing tmp files..."
+mv ${output}_* "$tmp"
+
+echo "Thank you and have a nice day."
+
