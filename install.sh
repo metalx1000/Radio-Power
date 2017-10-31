@@ -12,4 +12,8 @@ cp -vr home/pi/wwwR/* /home/pi/wwwR/
 cp -vr usr/local/bin/* /usr/local/bin/
 cp -vr etc/* /etc/
 
+#set proper permissions
 chmod -R 777 /home/pi/wwwR
+chown -R pi:pi /home/pi/wwwR/*
+chown -R pi:pi /home/pi/wwwR
+

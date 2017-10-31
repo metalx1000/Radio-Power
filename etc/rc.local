@@ -17,5 +17,8 @@ if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
 
-/bin/busybox -h /home/pi/wwwR/ -p 80 &
+/bin/busybox httpd -h /home/pi/wwwR/ -p 80 &
+
+(sleep 15;ifconfig eth0 down && ifconfig eth0 192.168.1.199 && ifconfig up) &
+
 exit 0
