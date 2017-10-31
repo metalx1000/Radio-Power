@@ -19,6 +19,6 @@ fi
 
 /bin/busybox httpd -h /home/pi/wwwR/ -p 80 &
 
-(sleep 15;ifconfig eth0 down && ifconfig eth0 192.168.1.199 && ifconfig up) &
+(sleep 15;ifconfig eth0 down && ifconfig eth0 192.168.1.199 && ifconfig up; dhclient eth0) &
 
 exit 0
