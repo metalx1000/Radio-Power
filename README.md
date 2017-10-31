@@ -13,3 +13,11 @@ sudo rtl_test -t
 git clone https://github.com/unixabg/RPI-Wireless-Hotspot.git
 cd RPI-Wireless-Hotspot
 sudo ./install
+
+#gps setup
+sudo apt install gpsd gpsd-clients python-gps
+#follow these instructions
+https://learn.adafruit.com/adafruit-ultimate-gps-on-the-raspberry-pi?view=all
+
+#test with 
+cat /dev/ttyS0
