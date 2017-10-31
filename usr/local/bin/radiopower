@@ -8,7 +8,8 @@ fi
 
 low="${1}M"
 hi="${2}M"
-split=".1M"
+#split=".1M"
+split="1M"
 
 dir=/home/pi/wwwR/output/
 mkdir -p "$dir"

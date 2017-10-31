@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="jquery.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+
+    <script>
+var status;
+
+$(document).ready(function(){
+  //check status every second
+  setInterval(function(){
+    statusCheck();
+    ping();
+    getOutput();
+  },1000);
+  statusCheck();
+  $("button").hide();
+  $("#offline").hide();
+
+  $("#start").click(function(){
+    var low = $('#low').val();
+    var hi = $('#hi').val();
+    if(low === "" || hi === ""){
+      alert("Freq Needed!!!");
+    }else{
+      start(low,hi);
+      /*    setTimeout(function(){
+            window.location.replace("output");
+            },500);
+       */
+    }
+  });
+
+  $("#stop").click(function(){
+    stop();
+
+    /*
+       setTimeout(function(){
+       window.location.replace("output");
+       },500);
+     */
+  });
+});
+
+function start(low,hi){
+  var url = '/cgi-bin/start.cgi';
+  $.get( url,{hi:hi,low:low}, function( data ) {
+    console.log( data );
+  });
+}
+
+function stop(){
+  var url = '/cgi-bin/stop.cgi';
+  $.get( url, function( data ) {
+    console.log( data );
+  });
+}
+
+
+function statusCheck(){
+  var url = '/cgi-bin/status.cgi';
+  $.get( url, function( data ) {
+    status = data;
+    if(status == "Running"){
+      $("#start").hide();
+      $("#stop").show();
+    }else{
+      $("#start").show();
+      $("#stop").hide();
+    }
+  });
+
+  $("#status").html(status);
+}
+
+function getOutput(){
+  var url = '/cgi-bin/lineoutput.cgi';
+  $.get(url,function(data){
+    $("#output").html("<pre>" + data + "</pre>");
+    });
+    }
+
+    function ping(){
+    $.ajax({
+    url: 'ping.html?r='+Math.random(),
+    success: function(result){
+    $("#main").show(); 
+    $("#offline").hide(); 
+    },     
+    error: function(result){
+    $("#main").hide();
+    $("#offline").show(); 
+    }
+    });
+    }
+    </script>
+  </head>
+  <body>
+
+    <div class="container">
+      <div id="main">
+        <Br>
+        <input placeholder="low" type="number" class="form-control" id="low" name="low">
+        <Br>
+        <input placeholder="hi" type="number" class="form-control" id="hi" name="hi">
+        <Br>
+        <button id="start" type="button" class="btn-lg btn-primary btn-block">Start</button>
+        <Br>
+        <button id="stop" type="button" class="btn-lg btn-primary btn-block">Stop</button>
+        <Br>
+        <a href="output" type="button" class="btn-lg btn-primary btn-block">View Files</a>
+
+      </div>
+      <div class="row" id="offline">
+        <div class="span4"></div>
+        <div class="span4">
+          <div class="row">
+            <img class="center-block" src="offline.png" />
+          </div>
+          <div class="row">
+            <div class="text-center">Offline</div>
+          </div>
+        </div>
+        <div class="span4"></div>
+      </div>
+      <br><br> 
+      <div id="status"></div>
+      <hr>
+      <div id="output"></div>
+    </div>
+
+  </body>
+</html>
+
