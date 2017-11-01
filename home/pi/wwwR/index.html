@@ -12,6 +12,9 @@
 var status;
 
 $(document).ready(function(){
+  //list recent files
+  getFileList();
+
   //check status every second
   setInterval(function(){
     statusCheck();
@@ -39,11 +42,12 @@ $(document).ready(function(){
   $("#stop").click(function(){
     stop();
 
-    /*
-       setTimeout(function(){
-       window.location.replace("output");
-       },500);
-     */
+    
+     setTimeout(function(){
+       getFileList();
+       //window.location.replace("output");
+     },500);
+    
   });
 });
 
@@ -98,6 +102,19 @@ function getOutput(){
     }
     });
     }
+
+    function getFileList(){
+      $.get("/cgi-bin/files.cgi",function(data){
+        var d = data.split("\n");
+        $("#files").html("");
+        d.forEach(function(i){
+          if( i != "" ){
+            var link = i.split('-')[0];
+            $("#files").append('<a href="/output/'+link+'" type="button" class="btn-lg btn-primary btn-block">'+i+'</a>');
+          }
+        });
+      });
+    }
     </script>
   </head>
   <body>
@@ -132,6 +149,9 @@ function getOutput(){
       <div id="status"></div>
       <hr>
       <div id="output"></div>
+      <h1>Recent Captures</h1>
+      <div id="files"></div>
+
     </div>
 
   </body>

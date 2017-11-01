@@ -6,6 +6,13 @@ then
   exit 1
 fi
 
+#create file while program is running and remove it when done
+runstat="/tmp/gpsrunning"
+touch "$runstat"
+
+#cleanup on crash
+trap "{ rm -f $runstat /tmp/radio.tmp; }" EXIT
+
 low="${1}M"
 hi="${2}M"
 #split=".1M"
@@ -25,11 +32,16 @@ do
 done &
 
 echo "Starting GPS..."
-cat /dev/ttyS0|while read g
+while [ -f "$runstat" ] 
 do
-  echo "$(date +%s) - $g" >> "${output}_2.html"
-done 
+  cat /dev/ttyS0|while read g
+  do
+    echo "$(date +%s) - $g" >> "${output}_2.html"
+  done 
+done
 
+#clean up
+rm "$runstat"
 #echo "press enter to continue"
 #read
 

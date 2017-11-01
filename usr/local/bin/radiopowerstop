@@ -3,12 +3,16 @@
 output="$(cat /tmp/radio.tmp)"
 tmp="/home/pi/wwwR/output/tmp/"
 
+rm /tmp/gpsrunning /tmp/radio.tmp
+
 echo "Killing rtl..."
 killall rtl_power
 echo "killing GPS..."
 ps aux|grep ttyS0|awk '{print $2}'|while read pid
 do 
   kill $pid
+  echo "killing $pid"
+  whoami
 done
 
 echo "Concatinating..."
@@ -19,6 +23,8 @@ sort ${output}_3 > ${output}.txt
 sleep .5
 echo "removing tmp files..."
 mv ${output}_* "$tmp"
+
+chmod -R 777 /home/pi/wwwR/output/*
 
 echo "Thank you and have a nice day."
 
